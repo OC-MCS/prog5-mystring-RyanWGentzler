@@ -25,9 +25,8 @@ MyString::MyString(const MyString& other)
 
 MyString::~MyString()
 {
-	delete[] str;
-
 	cout << "Destructor called\n";
+	delete[] str;
 }
 
 void MyString::operator= (const MyString& other)
@@ -35,17 +34,20 @@ void MyString::operator= (const MyString& other)
 	if (this != &other)
 	{
 		delete[]str;
-		str = new char[strlen(other.str) + 1];
-		strcpy_s(str, strlen(other.str) + 1, other.str);
+		str = new char[sizeof(other.str) + 1];
+		strcpy_s(str, sizeof(other.str) + 1, other.str);
 	}
 }
 
-MyString MyString::operator+(MyString& other)
+MyString MyString::operator+(const MyString& other)
 {
 	MyString temp;
+	const int SIZEOF1 = sizeof(str), SIZEOF2 = sizeof(other.str);
 
-	strcpy_s(temp.str, strlen(str), str);
-	strcat_s(temp.str, strlen(other.str), other.str);
+	temp.str = new char[SIZEOF1 + SIZEOF2];
+
+	strcpy_s(temp.str, SIZEOF1, str);
+	strcat_s(temp.str, SIZEOF2, other.str);
 
 	return temp;
 }
@@ -78,11 +80,11 @@ const char* MyString::c_str()
 	return str;
 }
 
-//ostream& operator<< (ostream& out, const MyString& str)
-//{
-//	for (int i = 0; i < strlen(str.c_str); i++)
-//	{
-//		out << str.c_str()[i];
-//	}
-//	return out;
-//}
+ostream& operator<< (ostream& out, MyString& str)
+{
+	for (int i = 0; i < strlen(str.c_str()); i++)
+	{
+		out << str.c_str()[i];
+	}
+	return out;
+}

@@ -11,7 +11,7 @@ public:
 	MyString(const MyString&);
 	~MyString();
 	void operator= (const MyString&);
-	MyString operator+(MyString&);
+	MyString operator+(const MyString&);
 	bool operator== (MyString&);
 	const char* c_str();
 };
