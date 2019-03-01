@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+using namespace std;
 
 class MyString
 {
@@ -16,3 +17,4 @@ public:
 	const char* c_str();
 };
 
+ostream& operator<< (ostream& out, MyString& str);

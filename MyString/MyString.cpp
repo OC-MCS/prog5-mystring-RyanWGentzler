@@ -34,20 +34,20 @@ void MyString::operator= (const MyString& other)
 	if (this != &other)
 	{
 		delete[]str;
-		str = new char[sizeof(other.str) + 1];
-		strcpy_s(str, sizeof(other.str) + 1, other.str);
+		str = new char[strlen(other.str) + 1];
+		strcpy_s(str, strlen(other.str) + 1, other.str);
 	}
 }
 
 MyString MyString::operator+(const MyString& other)
 {
 	MyString temp;
-	const int SIZEOF1 = sizeof(str), SIZEOF2 = sizeof(other.str);
+	int SIZE = strlen(str) + strlen(other.str) + 1;
 
-	temp.str = new char[SIZEOF1 + SIZEOF2];
+	temp.str = new char[SIZE];
 
-	strcpy_s(temp.str, SIZEOF1, str);
-	strcat_s(temp.str, SIZEOF2, other.str);
+	strcpy_s(temp.str, SIZE, str);
+	strcat_s(temp.str, SIZE, other.str);
 
 	return temp;
 }
