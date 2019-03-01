@@ -5,53 +5,84 @@ using namespace std;
 
 MyString::MyString()
 {
-
+	str = nullptr;
 }
 
-MyString::MyString(char* ptr)
+MyString::MyString(const char* ptr)
 {
-
+	str = new char[strlen(ptr) + 1];
+	strcpy_s(str, sizeof(ptr), ptr);
 }
 
 MyString::MyString(const MyString& other)
 {
-	int size = strlen(other.str) + 1;
+	size_t size = strlen(other.str) + 1;
 	str = new char[size];
 	strcpy_s(str, size, other.str);
+
+	cout << "Constructor Called.\n";
 }
 
 MyString::~MyString()
 {
+	delete[] str;
 
+	cout << "Destructor called\n";
 }
 
-void MyString::operator= (MyString& other)
+void MyString::operator= (const MyString& other)
 {
 	if (this != &other)
 	{
 		delete[]str;
 		str = new char[strlen(other.str) + 1];
-		strcpy_s(str, strlen(other.str), other.str);
+		strcpy_s(str, strlen(other.str) + 1, other.str);
 	}
 }
 
 MyString MyString::operator+(MyString& other)
 {
+	MyString temp;
 
+	strcpy_s(temp.str, strlen(str), str);
+	strcat_s(temp.str, strlen(other.str), other.str);
+
+	return temp;
 }
 
 bool MyString::operator== (MyString& other)
 {
+	bool result = true;
+	int i = 0;
+	
+	if (strlen(str) != strlen(other.str))
+	{result = false;}
+	else
+	{ 
+		while (result && i < strlen(str))
+		{
+			if (str[i] != other.str[i])
+			{
+				result = false;
+			}
 
+			i++;
+		}
+	}
+
+	return result;
 }
 
-char* MyString::c_str()
+const char* MyString::c_str()
 {
-
+	return str;
 }
 
-ostream& MyString::operator<< (ostream& out, const MyString& str)
-{
-	cout << *str;
-	return out;
-}
+//ostream& operator<< (ostream& out, const MyString& str)
+//{
+//	for (int i = 0; i < strlen(str.c_str); i++)
+//	{
+//		out << str.c_str()[i];
+//	}
+//	return out;
+//}
